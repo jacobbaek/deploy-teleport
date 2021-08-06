@@ -1,0 +1,10 @@
+---
+- name: install and run teleport node
+  hosts: node
+  roles:
+  - node
+
+- name: install and run teleport proxy/auth
+  hosts: proxy
+  roles:
+  - proxy
