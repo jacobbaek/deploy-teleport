@@ -1,0 +1,17 @@
+---
+- name: register the teleport deb key
+  apt_key:
+    url: https://deb.releases.teleport.dev/teleport-pubkey.asc
+    state: present
+
+- name: add teleport repository 
+  apt_repository:
+    repo: deb https://deb.releases.teleport.dev/ stable main
+    state: present
+
+- name: install teleport package
+  apt: 
+    name: "{{ item }}"
+    state: latest
+  loop:
+    - teleport

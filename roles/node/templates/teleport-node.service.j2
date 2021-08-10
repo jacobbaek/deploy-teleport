@@ -1,0 +1,20 @@
+# https://github.com/gravitational/teleport/blob/0f733b9e8506a82eed416852cbca87e28617b6e4/examples/systemd/production/node/teleport.service
+[Unit]
+Description=Teleport SSH Service
+After=network.target
+
+[Service]
+Type=simple
+Restart=on-failure
+# Set the nodes roles with the `--roles`
+# In most production environments you will not
+# want to run all three roles on a single host
+# --roles='proxy,auth,node' is the default value
+# if none is set
+ExecStart=/usr/local/bin/teleport start --roles=node --config=/etc/teleport.yaml --pid-file=/run/teleport.pid
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+PIDFile=/run/teleport.pid
+
+[Install]
+WantedBy=multi-user.target

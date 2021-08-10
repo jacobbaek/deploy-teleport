@@ -1,0 +1,23 @@
+teleport:
+  nodename: {{ ansible_hostname }}
+  data_dir: /var/lib/teleport
+  auth_servers:
+    - {{ teleport_auth_server }}:3025
+  log:
+    output: /var/lib/teleport/teleport.log
+    severity: DEBUG
+    format:
+      output: text
+      extra_fields: [level, timestamp, component, caller]
+  auth_token: {{ teleport_auth_secure_token }}
+ssh_service:
+  enabled: "yes"
+  labels:
+    os: linux 
+  commands:
+  - name: hostname
+    command: [/usr/bin/hostname]
+    period: 1m0s
+  - name: arch
+    command: [/usr/bin/uname, -p]
+    period: 1h0m0s

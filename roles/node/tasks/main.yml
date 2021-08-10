@@ -1,1 +1,17 @@
 ---
+- name: generate proxy/auth configuration file (/etc/teleport.yaml)
+  template:
+    src: teleport.yaml.j2
+    dest: /etc/teleport.yaml
+
+- name: generate proxy/auth systemd service
+  template:
+    src: teleport-node.service.j2
+    dest: /etc/systemd/system/teleport.service
+
+- name: start the teleport service 
+  systemd:
+    name: teleport
+    daemon_reload: true
+    state: started
+    enabled: true
