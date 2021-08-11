@@ -15,3 +15,7 @@
     daemon_reload: true
     state: started
     enabled: true
+
+- name: export public CA from teleport auth server
+  shell: /usr/local/bin/tctl auth export --type=user
+  register: teleport_public_ca_result

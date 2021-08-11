@@ -15,3 +15,35 @@
     daemon_reload: true
     state: started
     enabled: true
+
+# using OpenSSH 
+## getting teleport_user_ca.pub from auth server to node server.
+- name: print public CA
+  debug: 
+    var: hostvars[groups['proxy'][0]]['teleport_public_ca_result']
+  when: hostvars[groups['proxy'][0]]['teleport_public_ca_result'] is defined
+
+- name: make a public CA file
+  copy:
+    dest: /etc/ssh/teleport_user_ca.pub
+    content: "{{ hostvars[groups['proxy'][0]]['teleport_public_ca_result'].stdout }}"
+  when: hostvars[groups['proxy'][0]]['teleport_public_ca_result'] is defined
+
+- name: remove the "cert-authority" in the teleport_user_ca.pub
+  replace:
+    path: /etc/ssh/teleport_user_ca.pub
+    regexp: "cert-authority "
+    replace: ""
+
+## modify openssh configuration in teleport node 
+- name: teleport.yaml file 
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    insertafter: EOF
+    line: "TrustedUserCAKeys /etc/ssh/teleport_user_ca.pub"
+
+- name: restart sshd service
+  systemd:
+    name: sshd
+    state: restarted
+
