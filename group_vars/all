@@ -1,2 +1,6 @@
 teleport_auth_secure_token: security_token
 teleport_auth_server: 10.10.10.251
+
+# can use otp or not
+teleport_second_auth: "off"
+teleport_enhanced_recording_enable: true

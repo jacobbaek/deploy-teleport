@@ -14,6 +14,9 @@ auth_service:
   session_recording: "proxy"
   tokens:
   - "node:{{ teleport_auth_secure_token }}"
+  authentication:
+    type: local
+    second_factor: {{ teleport_second_auth }}
 ssh_service:
   enabled: "yes"
   labels:
@@ -22,6 +25,10 @@ ssh_service:
   - name: hostname
     command: [hostname]
     period: 1m0s
+{% if teleport_enhanced_recording_enable == true %}
+  enhanced_recording:
+    enabled: true
+{% endif %}
 proxy_service:
   enabled: "yes"
   listen_addr: {{ teleport_auth_server }}:3023
