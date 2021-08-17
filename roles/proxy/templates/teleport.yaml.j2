@@ -2,13 +2,16 @@ teleport:
   nodename: {{ ansible_hostname }}
   data_dir: /var/lib/teleport
   log:
-    output: stderr
-    severity: INFO
+    output: /var/lib/teleport/teleport.log
+    severity: ERROR
     format:
       output: text
   ca_pin: ""
+  storage:
+    type: dir
 auth_service:
   enabled: "yes"
+  cluster_name: {{ teleport_cluster_name }}
   listen_addr: {{ teleport_auth_server }}:3025
   proxy_checks_host_keys: no
   session_recording: "proxy"
@@ -20,11 +23,14 @@ auth_service:
 ssh_service:
   enabled: "yes"
   labels:
-    env: dev
+    env: admin
   commands:
   - name: hostname
-    command: [hostname]
+    command: [/usr/bin/hostname]
     period: 1m0s
+  - name: arch
+    command: [/usr/bin/uname, -p]
+    period: 1h0m0s
 {% if teleport_enhanced_recording_enable == true %}
   enhanced_recording:
     enabled: true

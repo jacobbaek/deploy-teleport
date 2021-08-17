@@ -1,6 +1,9 @@
 # teleport deploy playbook
 deploy teleport proxy/auth and teleport node via ansible playbook
 
+# What is teleport and understading what the teleport works
+* https://mr100do.tistory.com/1287 (written in Korean)
+
 # prerequites
 require 3 nodes.
 * node1 : run teleport proxy/auth 

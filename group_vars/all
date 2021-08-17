@@ -1,3 +1,4 @@
+teleport_cluster_name: default_cluster
 teleport_auth_secure_token: security_token
 teleport_auth_server: 10.10.10.251
 
